@@ -1,66 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:scrollbars="none"
     tools:context="com.serhatsurguvec.circlecountdownviewdemo.MainActivity">
-
-    <com.serhatsurguvec.continuablecirclecountdownview.ContinuableCircleCountDownView
-        android:id="@+id/circleCountDownView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_centerInParent="true"
-        app:shapeRate="9" />
-
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:weightSum="4.0">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnStart"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.0"
-            android:onClick="onClick"
-            android:text="Start"
-            android:textAllCaps="false" />
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="#C5CAE9">
 
-        <Button
-            android:id="@+id/btnStop"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.0"
-            android:onClick="onClick"
-            android:text="Stop"
-            android:textAllCaps="false" />
+            <TextView
+                android:id="@+id/buttonn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_margin="10dp"
+                android:text="Shape Rate : "
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="17sp" />
 
-        <Button
-            android:id="@+id/btnContinue"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.0"
-            android:onClick="onClick"
-            android:text="Continue"
-            android:textAllCaps="false" />
+            <EditText
+                android:id="@+id/shapeRateEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/buttonn"
+                android:layout_toLeftOf="@+id/changeShapeRateButton"
+                android:layout_toRightOf="@+id/buttonn"
+                android:layout_toStartOf="@+id/changeShapeRateButton"
+                android:gravity="center_horizontal"
+                android:inputType="number"
+                android:text="7" />
 
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.0"
-            android:onClick="onClick"
-            android:text="Cancel"
-            android:textAllCaps="false" />
+            <Button
+                android:id="@+id/changeShapeRateButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:onClick="onClick"
+                android:text="Change"
+                android:textAllCaps="false" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/lay1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/relativeLayout2"
+            android:background="#C5CAE9"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Colors : "
+                android:textColor="@android:color/black"
+                android:textSize="17sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3.0">
+
+                <Button
+                    android:id="@+id/innerColorButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:onClick="onColorClick"
+                    android:singleLine="true"
+                    android:text="Inner"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/outerColorButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:onClick="onColorClick"
+                    android:singleLine="true"
+                    android:text="Outer"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/progressColorButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:onClick="onColorClick"
+                    android:singleLine="true"
+                    android:text="Progress"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lay1"
+            android:background="#C5CAE9">
+
+            <Button
+                android:id="@+id/textColorButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onColorClick"
+                android:text="Text Color"
+                android:textAllCaps="false" />
+
+
+        </LinearLayout>
+
+
+        <com.serhatsurguvec.continuablecirclecountdownview.ContinuableCircleCountDownView
+            android:id="@+id/circleCountDownView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            app:shapeRate="9"
+            app:textSize="23sp" />
+
+
+        <CheckBox
+            android:id="@+id/startFromAnimateCb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/relativeLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="#C5CAE9"
+            android:text="Animate StartFrom" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/linearLayout"
+            android:background="#C5CAE9">
+
+
+            <TextView
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_margin="10dp"
+                android:text="Start From : "
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/startFromEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/button"
+                android:layout_toLeftOf="@+id/startFromButton"
+                android:layout_toRightOf="@+id/button"
+                android:layout_toStartOf="@+id/startFromButton"
+                android:gravity="center_horizontal"
+                android:inputType="number"
+                android:text="180" />
+
+            <Button
+                android:id="@+id/startFromButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:onClick="onClick"
+                android:text="Start"
+                android:textAllCaps="false" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="#C5CAE9"
+            android:orientation="horizontal"
+            android:weightSum="4.0">
+
+            <Button
+                android:id="@+id/btnStart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:onClick="onClick"
+                android:singleLine="true"
+                android:text="Start"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/btnStop"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:onClick="onClick"
+                android:singleLine="true"
+                android:text="Stop"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/btnContinue"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:onClick="onClick"
+                android:singleLine="true"
+                android:text="Continue"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:onClick="onClick"
+                android:singleLine="true"
+                android:text="Cancel"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
-</RelativeLayout>
+
+</ScrollView>

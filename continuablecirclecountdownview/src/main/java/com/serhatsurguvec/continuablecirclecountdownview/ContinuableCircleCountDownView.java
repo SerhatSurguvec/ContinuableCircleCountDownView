@@ -30,6 +30,7 @@ import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
 
 public class ContinuableCircleCountDownView extends View {
@@ -39,13 +40,17 @@ public class ContinuableCircleCountDownView extends View {
     private static final int DEFAULT_SIZE = 200;
     private static final int DEFAULT_RATE = 7;
     private static final int DEFAULT_TIME = 10000;
-    private static final int MAX_TIME = 60000;
     private static final int DEFAULT_INTERVAL = 1000;
     private static final int DEFAULT_OUTER_COLOR = Color.parseColor("#02ADC6");
     private static final int DEFAULT_INNER_COLOR = Color.parseColor("#02A5BE");
     private static final int DEFAULT_PROGRESS_COLOR = Color.RED;
     private static final int DEFAULT_TEXT_COLOR = Color.BLACK;
     private static final int DEFAULT_PADDING = 20;
+    private static final int DEFAULT_TEXT_SIZE = 12;//sp
+
+    private static final int MAX_TIME = 60000;
+    private static final int MAX_RATE = 15;
+    private static final int MIN_RATE = 6;
 
     private RectF rect;
     private RectF rect1;
@@ -59,6 +64,7 @@ public class ContinuableCircleCountDownView extends View {
 
     private int SIZE = DEFAULT_SIZE;
     private int RATE = DEFAULT_RATE;
+    private float TEXT_SIZE;
     private long TIME_MILLIS = DEFAULT_TIME;
     private long INTERVAL_TIME_MILLIS = DEFAULT_INTERVAL;
     private int OUTER_COLOR = DEFAULT_OUTER_COLOR;
@@ -96,6 +102,7 @@ public class ContinuableCircleCountDownView extends View {
         PROGRESS_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_progressColor, DEFAULT_PROGRESS_COLOR);
         TEXT_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_textColor, DEFAULT_TEXT_COLOR);
         angle = a.getInteger(R.styleable.ContinuableCircleCountDownView_progress, 0);
+        TEXT_SIZE = a.getDimension(R.styleable.ContinuableCircleCountDownView_textSize, DEFAULT_TEXT_SIZE);
 
         a.recycle();
 
@@ -114,6 +121,7 @@ public class ContinuableCircleCountDownView extends View {
         PROGRESS_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_progressColor, DEFAULT_PROGRESS_COLOR);
         TEXT_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_textColor, DEFAULT_TEXT_COLOR);
         angle = a.getInteger(R.styleable.ContinuableCircleCountDownView_progress, 0);
+        TEXT_SIZE = a.getDimension(R.styleable.ContinuableCircleCountDownView_textSize, DEFAULT_TEXT_SIZE);
 
         a.recycle();
 
@@ -134,6 +142,7 @@ public class ContinuableCircleCountDownView extends View {
         PROGRESS_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_progressColor, DEFAULT_PROGRESS_COLOR);
         TEXT_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_textColor, DEFAULT_TEXT_COLOR);
         angle = a.getInteger(R.styleable.ContinuableCircleCountDownView_progress, 0);
+        TEXT_SIZE = a.getDimension(R.styleable.ContinuableCircleCountDownView_textSize, DEFAULT_TEXT_SIZE);
 
         a.recycle();
 
@@ -204,10 +213,65 @@ public class ContinuableCircleCountDownView extends View {
 
         paint.setStrokeWidth(strokeWidth);
         outer.setStrokeWidth(strokeWidth);
-        text.setTextSize(strokeWidth);
+        text.setTextSize(TEXT_SIZE);
 
         calculateTextPosition();
 
+    }
+
+    public int getRATE() {
+        return RATE;
+    }
+
+    public void setRATE(int RATE) {
+        this.RATE = (int) ContinuableCircleCountDownView.clamp(RATE, MIN_RATE, MAX_RATE);
+
+        requestLayout();
+        invalidate();
+    }
+
+    public int getOUTER_COLOR() {
+        return OUTER_COLOR;
+    }
+
+    public void setOUTER_COLOR(int OUTER_COLOR) {
+        this.OUTER_COLOR = OUTER_COLOR;
+        outer.setColor(OUTER_COLOR);
+        invalidate();
+    }
+
+    public int getINNER_COLOR() {
+        return INNER_COLOR;
+    }
+
+    public void setINNER_COLOR(int INNER_COLOR) {
+        this.INNER_COLOR = INNER_COLOR;
+        inner.setColor(INNER_COLOR);
+        invalidate();
+    }
+
+    public int getPROGRESS_COLOR() {
+        return PROGRESS_COLOR;
+    }
+
+    public void setPROGRESS_COLOR(int PROGRESS_COLOR) {
+        this.PROGRESS_COLOR = PROGRESS_COLOR;
+        paint.setColor(PROGRESS_COLOR);
+        invalidate();
+    }
+
+    public int getTEXT_COLOR() {
+        return TEXT_COLOR;
+    }
+
+    public void setTEXT_COLOR(int TEXT_COLOR) {
+        this.TEXT_COLOR = TEXT_COLOR;
+        text.setColor(TEXT_COLOR);
+        invalidate();
+    }
+
+    public static float clamp(float val, float min, float max) {
+        return Math.max(min, Math.min(max, val));
     }
 
     /**
@@ -295,8 +359,8 @@ public class ContinuableCircleCountDownView extends View {
 
     public void start() {
 
-        //Already Running..
-        if (started)
+        //Already Running or Finished..
+        if (started || finished)
             return;
 
         //set bools
@@ -326,12 +390,16 @@ public class ContinuableCircleCountDownView extends View {
 
         //Start angle animation
         angleAnimation = new CircleAngleAnimation(this, 360);
+        angleAnimation.setUseOffset(false);
         angleAnimation.setDuration(TIME_MILLIS);
         angleAnimation.setFillAfter(true);
         this.startAnimation(angleAnimation);
 
     }
 
+    /**
+     * Continues
+     */
     public void continueE() {
 
         //Used when stopped.
@@ -364,6 +432,7 @@ public class ContinuableCircleCountDownView extends View {
 
             //Reuse animation
             angleAnimation.reset();
+            angleAnimation.setUseOffset(false);
             angleAnimation.setDuration(mMillisUntilFinished);
             angleAnimation.setFillAfter(true);
             this.startAnimation(angleAnimation);
@@ -375,30 +444,32 @@ public class ContinuableCircleCountDownView extends View {
 
     }
 
+    /**
+     * Cancels timer
+     * <p/>
+     * Offset is not reset , u have to implement yourself.
+     */
     public void cancel() {
 
-        //Usable when timer already started or stopped.
-        if (started || stopped) {
+        started = false;
+        finished = false;
+        stopped = false;
 
-            started = false;
-            finished = false;
-            stopped = false;
+        this.timer.cancel();
+        this.angleAnimation.cancel();
+        this.clearAnimation();
 
-            this.timer.cancel();
-            this.angleAnimation.cancel();
-            this.clearAnimation();
+        this.angleAnimation = null;
+        this.angle = 0;
+        this.mMillisUntilFinished = TIME_MILLIS;
+        this.invalidate();
 
-            this.angleAnimation = null;
-            this.angle = 0;
-            this.mMillisUntilFinished = TIME_MILLIS;
-            this.invalidate();
-
-        } else {
-            throw new IllegalStateException("This method must be called after started or stopped.");
-        }
 
     }
 
+    /**
+     * Stops the time makes it continue-able
+     */
     public void stop() {
 
         //Usable when timer already started.
@@ -443,6 +514,95 @@ public class ContinuableCircleCountDownView extends View {
         return started;
     }
 
+    /**
+     * Please provide an angle between 0-360 , time will be calculated automatically
+     *
+     * @param angle
+     */
+    public void startFrom(float angle, boolean animate) {
+
+        //clamp angle between 0-360
+        angle = angle % 360;
+
+        //Already Running..
+        if (started)
+            return;
+
+        //set bools
+        finished = false;
+        stopped = false;
+        started = true;
+
+        //Calculating
+        final long offset = (long) (TIME_MILLIS * (angle / 360));
+        final long timeShouldBegin = TIME_MILLIS - offset;
+
+        //Start timer
+        timer = new CountDownTimer(timeShouldBegin, INTERVAL_TIME_MILLIS) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mMillisUntilFinished = millisUntilFinished;
+                invalidate();
+                listener.onTick(TIME_MILLIS - mMillisUntilFinished);
+            }
+
+            @Override
+            public void onFinish() {
+                mMillisUntilFinished = 0;
+                listener.onCompleted();
+
+                started = false;
+                finished = true;
+                stopped = false;
+            }
+        }.start();
+
+
+        if (animate) {
+            animateToOffsetLocation(angle, new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    //Start angle animation
+                    angleAnimation = new CircleAngleAnimation(ContinuableCircleCountDownView.this, 360);
+                    angleAnimation.setUseOffset(false);
+                    angleAnimation.setDuration(timeShouldBegin);
+                    angleAnimation.setFillAfter(true);
+                    ContinuableCircleCountDownView.this.startAnimation(angleAnimation);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+        } else {
+
+            //Start angle animation
+            angleAnimation = new CircleAngleAnimation(ContinuableCircleCountDownView.this, 360);
+            angleAnimation.setOffSet(angle);
+            angleAnimation.setUseOffset(true);
+            angleAnimation.setDuration(timeShouldBegin);
+            angleAnimation.setFillAfter(true);
+            ContinuableCircleCountDownView.this.startAnimation(angleAnimation);
+        }
+
+
+    }
+
+    private void animateToOffsetLocation(float offset, Animation.AnimationListener listener) {
+        CircleAngleAnimation animation = new CircleAngleAnimation(this, (int) offset);
+        animation.setDuration(500);
+        animation.setFillAfter(true);
+        animation.setAnimationListener(listener);
+        this.startAnimation(animation);
+
+    }
+
     //If you want to animate use this animation class
     public static class CircleAngleAnimation extends Animation {
 
@@ -450,30 +610,49 @@ public class ContinuableCircleCountDownView extends View {
 
         private float oldAngle;
         private float newAngle;
+        private float offSet;
+        private boolean useOffset = false;
 
         public CircleAngleAnimation(ContinuableCircleCountDownView circle, int newAngle) {
             this.oldAngle = circle.getAngle();
             this.newAngle = newAngle;
             this.circle = circle;
+            this.offSet = 0.0f;
+            this.setInterpolator(new LinearInterpolator());
         }
+
 
         @Override
         public void reset() {
             super.reset();
             oldAngle = circle.getAngle();
-            newAngle = 360;
+        }
+
+        public void setOffSet(float offSet) {
+            this.offSet = offSet;
+        }
+
+        public void setUseOffset(boolean useOffset) {
+            this.useOffset = useOffset;
         }
 
         @Override
         protected void applyTransformation(float interpolatedTime, Transformation transformation) {
+
+            float off = 0.0f;
+
+            if (useOffset)
+                off = offSet;
+
             //Calculates Angle
-            float angle = oldAngle + ((newAngle - oldAngle) * interpolatedTime);
+            float angle = off + oldAngle + ((newAngle - oldAngle - off) * interpolatedTime);
+
             //Sets Angle
             circle.setAngle(angle);
-            //Layer Type Software
+
+            //Invalidate for Layer Type Software
             circle.invalidate();
         }
-
 
     }
 
