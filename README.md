@@ -1,3 +1,7 @@
+[![API](https://img.shields.io/badge/API-8%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=8)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ContinuableCircleCountDownView-green.svg?style=true)](https://android-arsenal.com/details/1/3057)
+
+
 # ContinuableCircleCountDownView
 
 Android custom view and progress for Continuable CountDownView.
