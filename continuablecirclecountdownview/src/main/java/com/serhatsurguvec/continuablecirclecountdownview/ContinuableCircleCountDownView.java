@@ -44,8 +44,8 @@ public class ContinuableCircleCountDownView extends View {
     private static final int DEFAULT_INTERVAL = 1000;
     private static final int DEFAULT_OUTER_COLOR = Color.parseColor("#02ADC6");
     private static final int DEFAULT_INNER_COLOR = Color.parseColor("#02A5BE");
-    private static final int DEFAULT_PROGRESS_COLOR = Color.RED;
-    private static final int DEFAULT_TEXT_COLOR = Color.BLACK;
+    private static final int DEFAULT_PROGRESS_COLOR = Color.parseColor("#FF0000");
+    private static final int DEFAULT_TEXT_COLOR = Color.parseColor("#000000");
     private static final int DEFAULT_PADDING = 20;
     private static final int DEFAULT_TEXT_SIZE = 12;//sp
 
