@@ -147,6 +147,11 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
             app:shapeRate="9"
+            app:innerColor="#02ADC6"
+            app:outerColor="#02ADC6"
+            app:progress="180"
+            app:textColor="#FF000000"
+            app:progressColor="#FFFF0000"
             app:textSize="23sp" />
 
 

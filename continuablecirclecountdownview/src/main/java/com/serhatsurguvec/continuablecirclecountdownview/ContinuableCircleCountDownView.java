@@ -19,6 +19,7 @@ package com.serhatsurguvec.continuablecirclecountdownview;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -92,61 +93,56 @@ public class ContinuableCircleCountDownView extends View {
 
     public ContinuableCircleCountDownView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ContinuableCircleCountDownView, 0, 0);
-
-        //Read
-        RATE = a.getInt(R.styleable.ContinuableCircleCountDownView_shapeRate, 7);
-        INNER_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_innerColor, DEFAULT_INNER_COLOR);
-        OUTER_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_outerColor, DEFAULT_OUTER_COLOR);
-        PROGRESS_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_progressColor, DEFAULT_PROGRESS_COLOR);
-        TEXT_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_textColor, DEFAULT_TEXT_COLOR);
-        angle = a.getInteger(R.styleable.ContinuableCircleCountDownView_progress, 0);
-        TEXT_SIZE = a.getDimension(R.styleable.ContinuableCircleCountDownView_textSize, DEFAULT_TEXT_SIZE);
-
-        a.recycle();
-
-        init();
+        setAttributes(context, attrs);
     }
+
 
     public ContinuableCircleCountDownView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ContinuableCircleCountDownView, 0, 0);
-
-        //Read
-        RATE = a.getInt(R.styleable.ContinuableCircleCountDownView_shapeRate, 7);
-        INNER_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_innerColor, DEFAULT_INNER_COLOR);
-        OUTER_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_outerColor, DEFAULT_OUTER_COLOR);
-        PROGRESS_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_progressColor, DEFAULT_PROGRESS_COLOR);
-        TEXT_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_textColor, DEFAULT_TEXT_COLOR);
-        angle = a.getInteger(R.styleable.ContinuableCircleCountDownView_progress, 0);
-        TEXT_SIZE = a.getDimension(R.styleable.ContinuableCircleCountDownView_textSize, DEFAULT_TEXT_SIZE);
-
-        a.recycle();
-
-        init();
+        setAttributes(context, attrs);
 
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public ContinuableCircleCountDownView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        setAttributes(context, attrs);
+    }
+
+    private void setAttributes(Context context, AttributeSet attrs) {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ContinuableCircleCountDownView, 0, 0);
 
         //Read
         RATE = a.getInt(R.styleable.ContinuableCircleCountDownView_shapeRate, 7);
-        INNER_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_innerColor, DEFAULT_INNER_COLOR);
-        OUTER_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_outerColor, DEFAULT_OUTER_COLOR);
-        PROGRESS_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_progressColor, DEFAULT_PROGRESS_COLOR);
-        TEXT_COLOR = a.getColor(R.styleable.ContinuableCircleCountDownView_textColor, DEFAULT_TEXT_COLOR);
+
+        ColorStateList innerStateList = a.getColorStateList(R.styleable.ContinuableCircleCountDownView_innerColor);
+        if (innerStateList != null) {
+            INNER_COLOR = innerStateList.getDefaultColor();
+        }
+
+        ColorStateList outerStateList = a.getColorStateList(R.styleable.ContinuableCircleCountDownView_outerColor);
+        if (outerStateList != null) {
+            OUTER_COLOR = outerStateList.getDefaultColor();
+        }
+
+        ColorStateList progressStateList = a.getColorStateList(R.styleable.ContinuableCircleCountDownView_progressColor);
+        if (progressStateList != null) {
+            PROGRESS_COLOR = progressStateList.getDefaultColor();
+        }
+
+        ColorStateList textStateList = a.getColorStateList(R.styleable.ContinuableCircleCountDownView_textColor);
+        if (textStateList != null) {
+            TEXT_COLOR = textStateList.getDefaultColor();
+        }
+
         angle = a.getInteger(R.styleable.ContinuableCircleCountDownView_progress, 0);
         TEXT_SIZE = a.getDimension(R.styleable.ContinuableCircleCountDownView_textSize, DEFAULT_TEXT_SIZE);
 
         a.recycle();
 
         init();
+
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

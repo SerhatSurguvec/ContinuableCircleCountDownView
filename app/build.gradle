@@ -19,9 +19,18 @@ android {
     }
 }
 
+//repositories {
+//    maven {
+//        url "https://jitpack.io"
+//    }
+//}
+
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(":continuablecirclecountdownview")
+
+//    compile 'com.github.SerhatSurguvec:continuablecirclecountdownview:v1.0'
     compile 'com.android.support:appcompat-v7:23.1.1'
     testCompile 'junit:junit:4.12'
 }
