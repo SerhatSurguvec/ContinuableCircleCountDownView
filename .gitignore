@@ -11,10 +11,15 @@
 # Generated files
 bin/
 gen/
+out/
 
 # Gradle files
 .gradle/
 build/
+
+#Idea
+.idea/
+.idea
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -31,5 +36,9 @@ proguard/
 # Android Studio captures folder
 captures/
 
-#Idea files
-.idea/ 
+# Intellij
+*.iml
+
+#GeneralFiles
+.DS_Store
+Thumbs.db

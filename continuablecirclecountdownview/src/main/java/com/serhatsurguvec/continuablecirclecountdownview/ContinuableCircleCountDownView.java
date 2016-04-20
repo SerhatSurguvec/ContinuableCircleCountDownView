@@ -273,7 +273,7 @@ public class ContinuableCircleCountDownView extends View {
     /**
      * millis must be lower than 60000 millis and greater than 0
      *
-     * @param millis
+     * @param millis millisecond
      */
     public void setTimer(long millis) {
 
@@ -293,7 +293,7 @@ public class ContinuableCircleCountDownView extends View {
 
     /**
      * millis must be lower than 60000 millis and greater than 0
-     * <p/>
+     *
      * interval must be lower than millis and greater than 0
      *
      * @param millis
@@ -442,7 +442,7 @@ public class ContinuableCircleCountDownView extends View {
 
     /**
      * Cancels timer
-     * <p/>
+     *
      * Offset is not reset , u have to implement yourself.
      */
     public void cancel() {
