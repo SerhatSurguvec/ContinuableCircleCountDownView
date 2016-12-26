@@ -108,20 +108,11 @@ countDownView.startFrom(angle, isAnimate);
 ```
 
 # Import
-Project build.gradle
-
-```
-repositories {
-    maven {
-        url "https://jitpack.io"
-    }
-}
-```
 
 Module build.gradle
 ```
-dependencies {
-  compile 'com.github.SerhatSurguvec:continuablecirclecountdownview:v1.0'
+dependencies{
+     compile 'com.serhatsurguvec.libraries:continuablecirclecountdownview:1.1'
 }
 ```
 
