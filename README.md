@@ -37,6 +37,8 @@ mCountDownView = (ContinuableCircleCountDownView) findViewById(R.id.countDownVie
 
 ```textSize``` Size of text  
 
+```shadowEnabled``` Enables or disables shadow
+
 
 Try these values yourself from example apk.
 
@@ -52,6 +54,7 @@ Try these values yourself from example apk.
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
             app:shapeRate="9"
+            app:shadowEnabled="true"
             app:innerColor="#02ADC6"
             app:outerColor="#02ADC6"
             app:progress="180"
@@ -112,13 +115,13 @@ countDownView.startFrom(angle, isAnimate);
 Module build.gradle
 ```
 dependencies{
-     compile 'com.serhatsurguvec.libraries:continuablecirclecountdownview:1.1'
+     compile 'com.serhatsurguvec.libraries:continuablecirclecountdownview:1.2'
 }
 ```
 
 Example Apk
 ------------
-
+Apk is not updated to v1.2
 https://www.dropbox.com/s/cl000kx9ij5b9bj/app-debug.apk?dl=0
 
 License
