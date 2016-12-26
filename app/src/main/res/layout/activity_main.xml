@@ -149,6 +149,7 @@
             app:shapeRate="9"
             app:innerColor="#02ADC6"
             app:outerColor="#02ADC6"
+            app:shadowEnabled="true"
             app:progress="180"
             app:textColor="#FF000000"
             app:progressColor="#FFFF0000"

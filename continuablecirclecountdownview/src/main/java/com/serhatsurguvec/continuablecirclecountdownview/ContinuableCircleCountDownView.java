@@ -48,6 +48,7 @@ public class ContinuableCircleCountDownView extends View {
     private static final int DEFAULT_TEXT_COLOR = Color.parseColor("#000000");
     private static final int DEFAULT_PADDING = 20;
     private static final int DEFAULT_TEXT_SIZE = 12;//sp
+    private static final boolean DEFAULT_SHADOW_ENABLED = true;
 
     private static final int MAX_TIME = 60000;
     private static final int MAX_RATE = 15;
@@ -72,6 +73,7 @@ public class ContinuableCircleCountDownView extends View {
     private int INNER_COLOR = DEFAULT_INNER_COLOR;
     private int PROGRESS_COLOR = DEFAULT_PROGRESS_COLOR;
     private int TEXT_COLOR = DEFAULT_TEXT_COLOR;
+    private boolean SHADOW_ENABLED = DEFAULT_SHADOW_ENABLED;
 
 
     private OnCountDownCompletedListener listener;
@@ -116,6 +118,8 @@ public class ContinuableCircleCountDownView extends View {
         //Read
         RATE = a.getInt(R.styleable.ContinuableCircleCountDownView_shapeRate, 7);
 
+        SHADOW_ENABLED = a.getBoolean(R.styleable.ContinuableCircleCountDownView_shadowEnabled, true);
+
         ColorStateList innerStateList = a.getColorStateList(R.styleable.ContinuableCircleCountDownView_innerColor);
         if (innerStateList != null) {
             INNER_COLOR = innerStateList.getDefaultColor();
@@ -156,14 +160,17 @@ public class ContinuableCircleCountDownView extends View {
         inner = new Paint();
         inner.setStyle(Paint.Style.FILL);
         inner.setAntiAlias(true);
-        inner.setShadowLayer(10, 6, 6, 0xbf000000);
+        if (SHADOW_ENABLED)
+            inner.setShadowLayer(10, 6, 6, 0xbf000000);
         inner.setShader(null);
         inner.setColor(INNER_COLOR);
 
         outer = new Paint();
         outer.setStyle(Paint.Style.STROKE);
         outer.setAntiAlias(true);
-        outer.setShadowLayer(10, 6, 6, 0xbf000000);
+
+        if (SHADOW_ENABLED)
+            outer.setShadowLayer(10, 6, 6, 0xbf000000);
         outer.setColor(OUTER_COLOR);
 
         text = new Paint();
